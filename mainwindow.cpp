@@ -1,68 +1,47 @@
 #include <QtWidgets>
-
 #include "mainwindow.h"
-
 //! [0]
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     setupFileMenu();
     setupHelpMenu();
     setupEditor();
-
     setCentralWidget(editor);
     setWindowTitle(tr("KOTEDITOR"));
 }
 //! [0]
-
-void MainWindow::about()
-{
+void MainWindow::about(){
     QMessageBox::about(this, tr("About KOTEDITOR"), tr("<p>KOTEDITOR it's syntax hightlight</p><hr><p>And.. i don't know</p>"));
 }
-
-void MainWindow::newFile()
-{
+void MainWindow::newFile(){
     editor->clear();
 }
-
-void MainWindow::openFile(const QString &path)
-{
+void MainWindow::openFile(const QString &path){
     QString fileName = path;
-
     if (fileName.isNull())
         fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", "C++ Files (*.cpp *.h)");
-
     if (!fileName.isEmpty()) {
         QFile file(fileName);
         if (file.open(QFile::ReadOnly | QFile::Text))
             editor->setPlainText(file.readAll());
     }
 }
-
 //! [1]
-void MainWindow::setupEditor()
-{
+void MainWindow::setupEditor(){
     QFont font;
     font.setFamily("Courier");
     font.setFixedPitch(true);
     font.setPointSize(10);
-
     editor = new QTextEdit;
     editor->setFont(font);
-
     highlighter = new Highlighter(editor->document());
-
     QFile file("mainwindow.h");
     if (file.open(QFile::ReadOnly | QFile::Text))
         editor->setPlainText(file.readAll());
 }
 //! [1]
-
-void MainWindow::setupFileMenu()
-{
+void MainWindow::setupFileMenu(){
     QMenu *fileMenu = new QMenu(tr("&File"), this);
-    menuBar()->addMenu(fileMenu);
-
+  menuBar()->addMenu(fileMenu);
     fileMenu->addAction(tr("&New"), QKeySequence::New,
                         this, &MainWindow::newFile);
     fileMenu->addAction(tr("&Open..."), QKeySequence::Open,
@@ -70,11 +49,8 @@ void MainWindow::setupFileMenu()
     fileMenu->addAction(tr("E&xit"), QKeySequence::Quit,
                         qApp, &QApplication::quit);
 }
-
-void MainWindow::setupHelpMenu()
-{
+void MainWindow::setupHelpMenu(){
     QMenu *helpMenu = new QMenu(tr("&Help"), this);
     menuBar()->addMenu(helpMenu);
-
     helpMenu->addAction(tr("&About"), this, &MainWindow::about);
 }
