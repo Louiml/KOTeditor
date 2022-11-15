@@ -10,8 +10,7 @@ class QTextDocument;
 QT_END_NAMESPACE
 
 //! [0]
-class Highlighter : public QSyntaxHighlighter
-{
+class Highlighter : public QSyntaxHighlighter{
     Q_OBJECT
 
 public:
@@ -21,8 +20,7 @@ protected:
     void highlightBlock(const QString &text) override;
 
 private:
-    struct HighlightingRule
-    {
+    struct HighlightingRule{
         QRegularExpression pattern;
         QTextCharFormat format;
     };
